@@ -50,28 +50,37 @@ maximum = [0] * (len(labels) - 2)
 iterator = range(2, len(labels))
 
 'Get all the values'
-values = csv.reader(fin)
+valuesReader = csv.reader(fin)
 
-'rowValues1(terrible name) is the first row of data for the data set'
-rowValues1 = values.__next__()
+values = list()
+
+'Convert all the values from strings to floats'
+for temp in valuesReader:
+	temp = [ float(i) for i in temp]
+	values.append(temp)
 
 '''Initialize the minimum and maximum arrays with
 the first row'''
-for i in range(2, len(labels)):
-	minimum[i - 2] = rowValues1[i]
-	maximum[i - 2] = rowValues1[i]	
-
-print(minimum)
-print(maximum)
+for i in iterator:
+	minimum[i - 2] = values[0][i]
+	maximum[i - 2] = values[0][i]
 
 '''Go through the rest of the file to find the minimum and
 maximum values for each column'''
 for labelValues in values:
-	for i in range(2, len(labels)):
+	for i in iterator:
 		if labelValues[i] < minimum[i - 2]:
 			minimum [i - 2] = labelValues[i]
 		if labelValues[i] > maximum[i - 2]:
 			maximum [i - 2] = labelValues[i]
-		
-print(minimum)
-print(maximum)
+
+'Define the normalize function. We can move this to wherever.'
+def normalize(minimum, maximum, value):
+	return ((value - minimum)/(maximum - minimum))
+
+'Go through the whole list again and normalize the values'	
+for i, rowValues in enumerate(values):
+	for j in iterator:
+		values[i][j] = normalize(minimum[j-2], maximum[j-2], rowValues[j])	
+
+'print(values)'
