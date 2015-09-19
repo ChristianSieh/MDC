@@ -84,6 +84,9 @@ def dist(dim, coordPlist, coordQlist):
                 result += (x - y) ** 2
         result = math.sqrt(result)
         return result
+def centroid(coords): #rough draft of computing centroid... should this be
+        #a multi dimensional list?
+        pass
 
 'Go through the whole list again and normalize the values'	
 for i, rowValues in enumerate(values):
