@@ -1,4 +1,5 @@
 import csv
+import math #need of square root
 
 'Need to change this to accept an arguemnt'
 fin = open('iris.csv', 'r')
@@ -77,6 +78,12 @@ for labelValues in values:
 'Define the normalize function. We can move this to wherever.'
 def normalize(minimum, maximum, value):
 	return ((value - minimum)/(maximum - minimum))
+def dist(dim, coordPlist, coordQlist):
+        result = 0
+        for x in coordPlist and y in coordQlist:
+                result += (x - y) ** 2
+        result = math.sqrt(result)
+        return result
 
 'Go through the whole list again and normalize the values'	
 for i, rowValues in enumerate(values):
