@@ -3,6 +3,7 @@ import math #need of square root
 
 'Need to change this to accept an arguemnt'
 fin = open('iris.csv', 'r')
+fout = open('iris.cv', 'w')
 
 reader = csv.reader(fin)
 
@@ -94,3 +95,6 @@ for i, rowValues in enumerate(values):
 		values[i][j] = normalize(minimum[j-2], maximum[j-2], rowValues[j])	
 
 'print(values)'
+
+fin.close() # just so we don't screw something up
+fout.close()# just so we don't screw something up
