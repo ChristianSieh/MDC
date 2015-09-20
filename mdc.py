@@ -9,7 +9,7 @@ reader = csv.reader(fin)
 
 'header is the first line in the file'
 header = reader.__next__()
-print(header)
+print('Header: ', header)
 
 'An iterator that we will use to get all the classificationsi in the header'
 iterHeader = iter(header)
@@ -17,31 +17,19 @@ iterHeader = iter(header)
 'Get the first value in the header since it is the database'
 database = next(iterHeader)
 
-'''Take all the classes and put them in a dictionary
-Could just use a string array but was learning how dictionaries
-work in Python'''
+'A list to hold the different classification'
+classNames = list()
+
+'Take all the classes and put the name in a string list'
 for classification in iterHeader:	
-	print(classification)
 	seperated = classification.split(sep='=')
-	print(seperated)
-	print(seperated[0])
-	print(seperated[1])
-	'''Take the "key" and "value" for each classification and
-	turn it into a tuple. This way we can add it to dictionary'''        
-	classificationTuple = tuple(seperated)
+	classNames.append(seperated[1])
 
-	'''Might be a better way of doing this but it initializes an
-	empty dictionary and then we update it with classificationTuple'''
-	myDictionary = {}
-	myDictionary.update({classificationTuple})
-
-for x in myDictionary:
-	print(x)
-	print(myDictionary[x])	
+print('classNames: ', classNames)
 
 'Get the labels into a list'
 labels = reader.__next__()
-print(labels)
+print('Labels: ', labels)
 
 '''*Should* give us a list of zeroes equal to the number of labels-2
 Since we don't need the sample number or class for normalizing'''
@@ -79,12 +67,14 @@ for labelValues in values:
 'Define the normalize function. We can move this to wherever.'
 def normalize(minimum, maximum, value):
 	return ((value - minimum)/(maximum - minimum))
+
 def dist(dim, coordPlist, coordQlist):
         result = 0
         for x in coordPlist and y in coordQlist:
                 result += (x - y) ** 2
         result = math.sqrt(result)
         return result
+
 def centroid(coords): #rough draft of computing centroid... should this be
         #a multi dimensional list?
         pass
@@ -94,7 +84,7 @@ for i, rowValues in enumerate(values):
 	for j in iterator:
 		values[i][j] = normalize(minimum[j-2], maximum[j-2], rowValues[j])	
 
-'print(values)'
+'''print('Values: ', values)'''
 
 fin.close() # just so we don't screw something up
 fout.close()# just so we don't screw something up
