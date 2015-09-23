@@ -97,11 +97,9 @@ for i, rowValues in enumerate(values):
 		values[i][j] = normalize(minimum[j-2], maximum[j-2], rowValues[j])	
 
 '''print('Values: ', values)'''
-<<<<<<< HEAD
+
 print(average(values)) #awesome
-=======
 print('Averages: ', average(values))
->>>>>>> origin/master
 
 fin.close()
 fout.close()
