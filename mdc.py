@@ -76,16 +76,20 @@ def dist(dim, coordPlist, coordQlist):
         return result
 
 def average(values):
-	total = 0
-	avglst = []
-	
-	for j in iterator:
-		for i,item in enumerate(values):
-			total += values[i][j]			
-		avglst.append(total / len(iterator))
-		total = 0
+	avgList = [[0] * len(iterator) for i in classNames]
+	totalList = [[0] * len(iterator) for i in classNames]
+	countList = [0] * len(classNames)
+		
+	for i, item in enumerate(values):
+		for j in iterator:
+			totalList[int(values[i][1])][j-2] += values[i][j]		
+		countList[int(values[i][1])] += 1
 
-	return avglst
+	for i, subList in enumerate(totalList):
+		for j in iterator:
+			avgList[i][j-2] = (totalList[i][j-2] / countList[i])
+
+	return avgList
 
 'Go through the whole list again and normalize the values'	
 for i, rowValues in enumerate(values):
@@ -93,7 +97,11 @@ for i, rowValues in enumerate(values):
 		values[i][j] = normalize(minimum[j-2], maximum[j-2], rowValues[j])	
 
 '''print('Values: ', values)'''
+<<<<<<< HEAD
 print(average(values)) #awesome
+=======
+print('Averages: ', average(values))
+>>>>>>> origin/master
 
 fin.close()
 fout.close()
