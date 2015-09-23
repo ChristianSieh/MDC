@@ -89,11 +89,15 @@ def average(values):
 
 'Go through the whole list again and normalize the values'	
 for i, rowValues in enumerate(values):
-	for j in iterator:
+	for j in iterator: #not sure but is iterator a global?
 		values[i][j] = normalize(minimum[j-2], maximum[j-2], rowValues[j])	
 
 '''print('Values: ', values)'''
-print(average(values))
+print(average(values)) #awesome
 
 fin.close()
 fout.close()
+#1) We need to discuss how to get the value of each class (split each class out)
+#2) We need to put this in a loop
+#3) is the iterator variable a global? but maybe this is OK.  Think it might be OK, yeah probably is OK
+#4) Modulize our code?
