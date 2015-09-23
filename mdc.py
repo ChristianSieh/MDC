@@ -75,25 +75,25 @@ def dist(dim, coordPlist, coordQlist):
         result = math.sqrt(result)
         return result
 
-def average(values): #rough draft useful in computing centroid... should this be
-        #a multi dimensional list? No, Ben (talking to myself), you're an idiot.... do it similar to how Christian did normalize
-        #see his normalize loop below.  Now go to bed.
-        ttl = 0
-        avglst = []
-        iterator = range(0, len(values)) #I'm not convinced this is correct iterator
-        for j in enumerate(values):
-                for i in iterator:
-                        ttl += values[i][j]
-                avglst.append(ttl / len(values))
-        return avglst #basically this list should be the centroid
+def average(values):
+	total = 0
+	avglst = []
+	
+	for j in iterator:
+		for i,item in enumerate(values):
+			total += values[i][j]			
+		avglst.append(total / len(iterator))
+		total = 0
+
+	return avglst
 
 'Go through the whole list again and normalize the values'	
-for i, rowValues in enumerate(values): #can we document this to explain why certain indexes are used? I see it
-        #but just to be sure?  Also, what does enumerate do again?
+for i, rowValues in enumerate(values):
 	for j in iterator:
 		values[i][j] = normalize(minimum[j-2], maximum[j-2], rowValues[j])	
 
 '''print('Values: ', values)'''
+print(average(values))
 
-fin.close() # just so we don't screw something up
-fout.close()# just so we don't screw something up
+fin.close()
+fout.close()
