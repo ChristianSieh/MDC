@@ -19,13 +19,18 @@ def average(values):
 	countList = [0] * len(classNames)
 
 	for i, item in enumerate(values):
+		print('i: ', i)
 		for j in iterator:
+			print('j: ', j)
 			totalList[int(values[i][1])][j-2] += values[i][j]		
-		countList[int(values[i][1])] += 1	
+		countList[int(values[i][1])] += 1
 
 	for i, subList in enumerate(totalList):
+		print('i: ', i)
 		for j in iterator:
+			print('j: ', j)
 			avgList[i][j-2] = (totalList[i][j-2] / countList[i])
+	
 	return avgList
 
 'Need to change this to accept an arguemnt'
@@ -58,7 +63,6 @@ print('classNames: ', classNames)
 labels = reader.__next__()
 print('Labels: ', labels)
 
-
 '''*Should* give us a list of zeroes equal to the number of labels-2
 Since we don't need the sample number or class for normalizing'''
 minimum = [0] * (len(labels) - 2)
@@ -72,7 +76,6 @@ valuesReader = csv.reader(fin)
 
 values = list()
 
-
 'Convert all the values from strings to floats'
 for temp in valuesReader:
 	temp = [ float(i) for i in temp]
@@ -81,6 +84,8 @@ for temp in valuesReader:
 #############################################################################
 test = []
 
+#print('values: ', values)
+
 for k, thing in enumerate(values):
 	test = values.pop(k)
 	normalTest = copy.deepcopy(test)
@@ -88,9 +93,9 @@ for k, thing in enumerate(values):
 
 	'''Initialize the minimum and maximum arrays with
 	the first row'''
-	for j in iterator:
-		minimum[j - 2] = values[0][j]
-		maximum[j - 2] = values[0][j]
+	for i in iterator:
+		minimum[i - 2] = values[0][i]
+		maximum[i - 2] = values[0][i]
 
 
 	'''Go through the rest of the file to find the minimum and
@@ -101,6 +106,9 @@ for k, thing in enumerate(values):
 				minimum [i - 2] = row[i]
 			if row[i] > maximum[i - 2]:
 				maximum [i - 2] = row[i]
+		
+	#print('maximum: ', maximum)
+	#print('minimum: ', minimum)
 
 	'Go through the whole list again and normalize the values'	
 	for i, rowValues in enumerate(normalList):
@@ -112,19 +120,28 @@ for k, thing in enumerate(values):
 
 	values.insert(k,test)
 
+	#for ben in normalList:
+		#print('normalList: ', ben)
+
 	centroid = average(normalList) #awesome
 	
 	best = 1000000
-		
+	
+	print('k: ', k)
+	
 	for yep,myClass in enumerate(centroid):
 		result = dist(myClass, normalTest)	
 		if(result < best):
+			#print('result: ', result)
 			best = result
 			bestClass = yep
-	print('k: ', k)	
-	print('BestClass: ', bestClass)		
+
+	print('bestClass: ', bestClass)
 	bestClass = 0
 
+	#print('normalTest: ', normalTest)
+	#print(centroid)
+print('Averages: ', average(values))
 
 fin.close()
 fout.close()
