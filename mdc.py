@@ -1,50 +1,9 @@
 import csv
-import math #need of square root
 import copy
 import sys
+import mdcFunctions
 
 'Define the normalize function. We can move this to wherever.'
-def normalize(minimum, maximum, value):
-	return ((value - minimum)/(maximum - minimum))
-
-def dist(sampleList, testList):
-	result = 0
-	for x, row in enumerate(sampleList):
-		result += abs((sampleList[x] - testList[x+2]) ** 2)
-	result = math.sqrt(result)
-	return result
-
-def average(values, classes):
-	avgList = [[0] * len(iterator) for i in classes]
-	totalList = [[0] * len(iterator) for i in classes]
-	countList = [0] * len(classes)
-
-	for i, item in enumerate(values):
-		for j in iterator:
-			totalList[int(values[i][1])][j-2] += values[i][j]		
-		countList[int(values[i][1])] += 1	
-
-	for i, subList in enumerate(totalList):
-		for j in iterator:
-			avgList[i][j-2] = (totalList[i][j-2] / countList[i])
-	
-	return avgList
-
-def output(values, count, classes, numWrong, guess):
-	for i,name in enumerate(classes):
-		print('class ' + str(i) + ' (' + name + '): ' + str(count[i]) + ' samples, ' + str(round((((count[i] - numWrong[i]) / count[i]) * 100),1)) + '% accuracy')
-		fout.write('class ' + str(i) + ' (' + name + '): ' + str(count[i]) + ' samples, ' + str(round((((count[i] - numWrong[i]) / count[i]) * 100),1)) + '% accuracy\n')	
-
-	print('overall: ' + str(len(values)) + ' samples, ' + str(round(((len(values) - sum(numWrong)) / len(values) * 100),1)) + '% accuracy')
-	fout.write('overall: ' + str(len(values)) + ' samples, ' + str(round(((len(values) - sum(numWrong)) / len(values) * 100),1)) + '% accuracy\n\n')
-
-	fout.write('Sample,Class,Predicted\n')
-
-	for k,row in enumerate(values):
-		fout.write(str(int(row[0])) + ',' + str(int(row[1])) + ',' + str(guess[k]))
-		if(guess[k] != row[1]):
-			fout.write(',*')
-		fout.write('\n')
 
 'Try to open input file otherwise print error and exit'
 try:
@@ -150,21 +109,20 @@ for k, row in enumerate(values):
 	'Go through the whole list again and normalize the values'	
 	for i, rowValues in enumerate(normalList):
 		for j in iterator:
-			normalList[i][j] = normalize(minimum[j-2], maximum[j-2], rowValues[j])	
+			normalList[i][j] = mdcFunctions.normalize(minimum[j-2], maximum[j-2], rowValues[j])	
 	for i in iterator:
-		normalTest[i] = normalize(minimum[i-2], maximum[i-2], normalTest[i]) 
+		normalTest[i] = mdcFunctions.normalize(minimum[i-2], maximum[i-2], normalTest[i]) 
 
 	'centroid is the a list that contains a list of features for each class'
-	centroid = average(normalList, classes)
+	centroid = mdcFunctions.average(normalList, classes, iterator)
 	
 	'''Best will be used to compare vs the values returned
 	by the dist function. If it\'s smaller then best it\'s
 	the best so far.'''
 	best = sys.maxsize
 	
-	
 	for i,classCentroid in enumerate(centroid):
-		result = dist(classCentroid, normalTest)	
+		result = mdcFunctions.dist(classCentroid, normalTest)	
 		if(result < best):
 			best = result
 			bestGuess = i	
@@ -185,8 +143,7 @@ for k, row in enumerate(values):
 	if(guess[k] != row[1]):
 		numWrong[int(row[1])] += 1	
 
-output(values, count, classes, numWrong, guess)
+mdcFunctions.output(values, count, classes, numWrong, guess, fout)
 
 fin.close()
 fout.close()
-#4) Modulize our code?
