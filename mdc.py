@@ -1,9 +1,26 @@
+'''Authors: Ben Kaiser and Christian Sieh
+   Date: 9/24/2015
+
+   Usage: mdc.py [inputfile.csv]
+
+   This program will read in a csv file. Get the database name and class
+   number and name from the first line. The features of the classes from
+   the second line and then read the dataset until the end of the file.
+   The program will go through each row and use that as the test dataset
+   and use all other rows for a sample. Then it gets the minimum and 
+   maximum for each feature in sample. Next the sample and test data
+   is normalized and then the average of each feature in each class in
+   sample is found. Then each feature in the test data is compared
+   to it's respective feature in each class of the average list by using
+   euclidian distance. Finally the program will guess which class test 
+   belongs to based on how close it is to that class' average. The
+   accuracy is written to standard out and the output file. The 
+   guesses are also written to the output file.
+'''
 import csv
 import copy
 import sys
 import mdcFunctions
-
-'Define the normalize function. We can move this to wherever.'
 
 'Try to open input file otherwise print error and exit'
 try:
@@ -65,9 +82,9 @@ values = list()
 
 
 'Convert all the values from strings to floats'
-for temp in valuesReader:
-	temp = [ float(i) for i in temp]
-	values.append(temp)
+for row in valuesReader:
+	row = [ float(i) for i in row]
+	values.append(row)
 
 'A list that will get the total number of rows associated with each class'
 count = [0] * len(classes)
